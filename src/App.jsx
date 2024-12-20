@@ -2,15 +2,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, NavLink } from 'react-router-dom';
 import Movie from './components/Movie.jsx';
 import FavMovie from './components/FavMovie.jsx';
-import { addMovieToFavs, nextMovie } from './store/actions/index.js';
+import { addMovieToFavs, nextMovie, prevMovie } from './store/actions/index.js';
 
 function App() {
   const sira = useSelector((store) => store.sira);
+  const movies = useSelector((store) => store.movies);
   const favMovies = useSelector((store) => store.favMovies);
   const dispatch = useDispatch();
 
   function sonrakiFilm() {
     dispatch(nextMovie());
+  }
+
+  function oncekiFilm() {
+    dispatch(prevMovie());
   }
 
   function addMovieHandler() {
@@ -38,20 +43,35 @@ function App() {
       </nav>
       <Switch>
         <Route exact path="/">
+          {movies.length == 0 ? <div className="text-center">  
+  Eklenecek yeni film bulunamadı...  
+</div> : <>
           <Movie sira={sira} />
 
           <div className="flex gap-3 justify-end py-3">
+            {  sira > 0 && (
+          <button
+              onClick={oncekiFilm}
+              className="select-none px-4 py-2 border border-blue-700 text-blue-700 hover:border-blue-500 hover:text-blue-500"
+            >
+              Önceki
+            </button>
+)}
+            {
+                sira < (movies.length-1) && (
             <button
               onClick={sonrakiFilm}
               className="select-none px-4 py-2 border border-blue-700 text-blue-700 hover:border-blue-500 hover:text-blue-500"
             >
               Sıradaki
             </button>
-
+)}
             <button onClick={addMovieHandler} className="select-none px-4 py-2 bg-blue-700 hover:bg-blue-600 text-white">
               Listeme ekle
             </button>
           </div>
+          </>
+}
         </Route>
 
         <Route path="/listem">

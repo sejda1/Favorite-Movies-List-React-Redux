@@ -4,6 +4,7 @@ import {
   NEXT_MOVIE,
   ADD_MOVIE_TO_FAVS,
   REMOVE_MOVIE_FROM_FAVS,
+  PREV_MOVIE
 } from '../actions/index.js';
 
 const initialState = {
@@ -19,13 +20,23 @@ export default function reducer(state = initialState, action) {
         ...state,
         sira: state.sira + 1,
       };
+      case PREV_MOVIE:
+        return {
+          ...state,
+          sira: state.sira - 1,
+        };
       case ADD_MOVIE_TO_FAVS:
         const currentMovie = state.movies[state.sira];
         const updatedMovies = state.movies.filter((movie) => movie.id !== currentMovie.id);
         return {
           ...state,
           favMovies: [...state.favMovies, currentMovie],
-          sira: Math.min(state.sira, updatedMovies.length - 1), // Sira kontrolü!
+          sira: 
+          state.movies.length - state.sira == 1 
+          ? state.sira == 0 
+          ? 0
+          : state.sira - 1 : 
+          state.sira,
           movies: updatedMovies,
         };
         case REMOVE_MOVIE_FROM_FAVS:
