@@ -4,3 +4,4 @@ import logger from 'redux-logger';
 
 export const myStore = createStore(reducer, applyMiddleware(logger)); 
 
+console.log("Hello redux-logger");
